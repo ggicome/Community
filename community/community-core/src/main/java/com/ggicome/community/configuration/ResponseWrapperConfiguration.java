@@ -1,6 +1,7 @@
-package com.ggicome.community.configration;
+package com.ggicome.community.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ggicome.community.annotation.ResponseWrapper;
 import com.ggicome.community.aop.ResponseWrapperAop;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.Method;
 
 /**
@@ -27,13 +29,26 @@ import java.lang.reflect.Method;
 @Configuration
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class ResponseWrapperConfigration implements ResponseBodyAdvice<Object> {
+public class ResponseWrapperConfiguration implements ResponseBodyAdvice<Object> {
     private final ObjectMapper objectMapper;
 
     @Override
     public boolean supports(@NotNull MethodParameter returnType,
                             @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
-        return true;
+        // 判断方法返回类型是否为ResponseWrapperVO
+        Method method = returnType.getMethod();
+        if (method == null) {
+            return false;
+        }
+        if (method.getReturnType() == ResponseWrapperAop.ResponseWrapperVO.class) {
+            return false;
+        }
+        // 类上是否有ResponseWrapper注解
+        if (returnType.getDeclaringClass().isAnnotationPresent(ResponseWrapper.class)) {
+            return true;
+        }
+        // 方法上是否有ResponseWrapper注解
+        return method.isAnnotationPresent(ResponseWrapper.class);
     }
 
     @SneakyThrows
