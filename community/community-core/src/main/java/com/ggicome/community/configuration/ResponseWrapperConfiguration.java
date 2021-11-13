@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.Method;
 
 /**
@@ -43,12 +43,13 @@ public class ResponseWrapperConfiguration implements ResponseBodyAdvice<Object> 
         if (method.getReturnType() == ResponseWrapperAop.ResponseWrapperVO.class) {
             return false;
         }
-        // 类上是否有ResponseWrapper注解
-        if (returnType.getDeclaringClass().isAnnotationPresent(ResponseWrapper.class)) {
+        // 方法上是否有ResponseWrapper注解
+        if (AnnotationUtils.findAnnotation(method, ResponseWrapper.class) instanceof ResponseWrapper) {
             return true;
         }
-        // 方法上是否有ResponseWrapper注解
-        return method.isAnnotationPresent(ResponseWrapper.class);
+        // 类上是否有ResponseWrapper注解
+        return AnnotationUtils.findAnnotation(returnType.getDeclaringClass(), ResponseWrapper.class) instanceof ResponseWrapper;
+
     }
 
     @SneakyThrows

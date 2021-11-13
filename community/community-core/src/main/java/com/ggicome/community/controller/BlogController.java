@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/blog")
+@ResponseWrapper
 public class BlogController {
-    @ResponseWrapper
     @GetMapping("test")
     public String test() {
         return "111";
