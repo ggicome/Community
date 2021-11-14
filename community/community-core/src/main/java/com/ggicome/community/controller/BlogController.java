@@ -1,9 +1,9 @@
 package com.ggicome.community.controller;
 
 import com.ggicome.community.annotation.ResponseWrapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ggicome.community.domain.Blog;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: community
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/blog")
 @ResponseWrapper
 public class BlogController {
-    @GetMapping("test")
-    public String test() {
+    @PostMapping("/test")
+    public String test(@Validated @RequestBody Blog blog) {
         return "111";
     }
 }

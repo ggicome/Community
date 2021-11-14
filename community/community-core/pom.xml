@@ -9,7 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <validation.version>2.0.1.Final</validation.version>
+    </properties>
     <artifactId>community-core</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -31,6 +31,9 @@ import java.util.Map;
 @ConditionalOnClass({ProceedingJoinPoint.class})
 @RequiredArgsConstructor
 public class ResponseWrapperAop {
+    /**
+     * 基本数据类型默认值
+     */
     private static final Map<Class<?>, Object> CLASS_DEFAULT = new HashMap<>();
 
     private final HttpServletRequest request;
